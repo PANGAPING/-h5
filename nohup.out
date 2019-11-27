@@ -1,0 +1,137 @@
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+7212842e870430d3818513f038fb7d6843d581f8
+fs.js:142
+  throw new ERR_INVALID_CALLBACK(cb);
+  ^
+
+TypeError [ERR_INVALID_CALLBACK]: Callback must be a function. Received 'utf-8'
+    at maybeCallback (fs.js:142:9)
+    at Object.writeFile (fs.js:1175:14)
+    at /wechatserver/server/app.js:81:6
+    at FSReqCallback.readFileAfterClose [as oncomplete] (internal/fs/read_file_context.js:61:3)
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
++1
+events.js:177
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::80
+    at Server.setupListenHandle [as _listen2] (net.js:1226:14)
+    at listenInCluster (net.js:1274:12)
+    at Server.listen (net.js:1362:7)
+    at Function.listen (/wechatserver/server/node_modules/express/lib/application.js:618:24)
+    at Object.<anonymous> (/wechatserver/server/app.js:74:5)
+    at Module._compile (internal/modules/cjs/loader.js:774:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)
+    at Module.load (internal/modules/cjs/loader.js:641:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:837:10)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1253:8)
+    at processTicksAndRejections (internal/process/task_queues.js:84:9) {
+  code: 'EADDRINUSE',
+  errno: 'EADDRINUSE',
+  syscall: 'listen',
+  address: '::',
+  port: 80
+}
+events.js:177
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::80
+    at Server.setupListenHandle [as _listen2] (net.js:1226:14)
+    at listenInCluster (net.js:1274:12)
+    at Server.listen (net.js:1362:7)
+    at Function.listen (/wechatserver/server/node_modules/express/lib/application.js:618:24)
+    at Object.<anonymous> (/wechatserver/server/app.js:74:5)
+    at Module._compile (internal/modules/cjs/loader.js:774:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:785:10)
+    at Module.load (internal/modules/cjs/loader.js:641:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
+    at Function.Module.runMain (internal/modules/cjs/loader.js:837:10)
+Emitted 'error' event at:
+    at emitErrorNT (net.js:1253:8)
+    at processTicksAndRejections (internal/process/task_queues.js:84:9) {
+  code: 'EADDRINUSE',
+  errno: 'EADDRINUSE',
+  syscall: 'listen',
+  address: '::',
+  port: 80
+}

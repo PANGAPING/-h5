@@ -1,0 +1,553 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>领取武大校庆专属头像</title>
+    <script src="./html2canvas.js"></script>
+    <script src="./canvas2image.js"></script>
+    <script src="./FileSaver.js"></script>
+    <script src="./jquery.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        .page-container {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .headShow {
+            height: 350px;
+            width: 350px;
+            position: absolute;
+            left: 50%;
+            top: 60%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+        .shelter {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .userHead {
+            height: 100%;
+            width: 100%;
+        }
+
+        .headBorders-container {
+            position: absolute;
+            height: 100%;
+            display: flex;
+            top: 0;
+            left: 0;
+            transform: translateX(0);
+            /*overflow: hidden;*/
+        }
+
+
+        .headBorder {
+            height: 100%;
+            width: 100%;
+        }
+
+
+
+        .headShow .lastCharacter {
+            display: inline-block;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%) translateX(-150%);
+        }
+
+        .headShow .nextCharacter {
+            display: inline-block;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%) translateX(150%);
+        }
+
+        .character {
+            color: red;
+            font-size: 80px;
+            font-weight: bold;
+            border-radius: 50% 50%;
+            background-color: white;
+            height: 80px;
+            width: 80px;
+            line-height: 80px;
+            text-align: center;
+            box-shadow: 1px 1px 9px black;
+        }
+
+        .background-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .background {
+            height: 100%;
+            width: 100%;
+        }
+
+        .upload-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) translateY(150%);
+            bottom: 0;
+            color: white;
+            letter-spacing: 5px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px gray;
+            border-radius: 50px 50px;
+            box-shadow: 1px 1px 9px black;
+            padding: 20px 40px;
+            font-size: 50px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .save-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%) translateY(300%);
+            bottom: 0;
+            color: white;
+            letter-spacing: 5px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px gray;
+            border-radius: 50px 50px;
+            box-shadow: 1px 1px 9px black;
+            padding: 20px 40px;
+            font-size: 50px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #result-container {
+            position: fixed;
+            top: 0;
+            z-index: 10000000;
+        }
+
+        .animationGifContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 1000;
+            opacity: 1;
+            transition: all 0.5s ease-in-out;
+        }
+
+            .animationGifContainer .animationGif {
+                height: 100%;
+                position: absolute;
+                width: 100%;
+            }
+
+        #result-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-20%) translateX(-50%);
+            display: none;
+            text-align: center;
+            z-index: 10000;
+        }
+
+        #result-image {
+            height: 500px;
+            width: 500px;
+        }
+
+            #result-image img {
+                height: 100%;
+                width: 100%;
+            }
+
+        .info-text {
+            white-space: no-wrap;
+            text-align: center;
+            color: white;
+            font-size: 60px;
+            transform: translateY(100%);
+        }
+
+        #countShow {
+            position: fixed;
+            left: 50%;
+            white-space: nowrap;
+            top: 0;
+            font-size: 40px;
+            color: white;
+            transform: translateX(-50%) translateY(-300%);
+            letter-spacing: 2px;
+        }
+
+
+        #count {
+            font-size: 60px;
+            vertical-align: middel;
+            font-weight: bold;
+        }
+
+
+        .loadingContainer {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            z-index: 1000;
+        }
+
+            .loadingContainer .loadingGif {
+                height: 100%;
+                position: absolute;
+                width: 100%;
+            }
+
+        .musicBtn {
+            height: 70px;
+            width: 70px;
+            position: fixed;
+            left: 30px;
+            top: 30px;
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 100000;
+            animation: music 1s infinite linear;
+            transform-origin: 50% 50%;
+        }
+
+        @keyframes music {
+            0% {
+                width: 60px;
+                height: 60px;
+            }
+
+            25% {
+                width: 40px;
+                height: 40px;
+            }
+
+            50% {
+                width: 60px;
+                height: 60px;
+            }
+
+            75% {
+                width: 70px;
+                height: 70px;
+            }
+
+            100% {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img class="musicBtn" src="/musicBtn.png"></img>
+    <div class="animationGifContainer">
+        <img class="animationGif" src="/animation.gif" />
+    </div>
+
+    <div class="loadingContainer">
+        <img class="loadingGif" src="./loading.gif"></img>
+    </div>
+    <div class="page-container">
+        <audio src="/music.mp3" autoplay></audio>
+        <div class="background-container">
+            <img class="background" src="./background.gif" alt="Alternate Text" />
+        </div>
+        <div class="headShow" id="content">
+            <p id="countShow">已经有<span id="count"></span>位武大人领取了专属头像框!</p>
+            <img class="userHead" src="./cat.jpg" alt="Alternate Text" />
+            <div class="shelter">
+                <div class="headBorders-container">
+                    <img class="headBorder" src="./borders/border2.png" alt="Alternate Text" />
+                    <img class="headBorder" src="./borders/border1.png" alt="Alternate Text" />
+                    <img class="headBorder" src="./borders/border3.png" alt="Alternate Text" />
+                    <img class="headBorder" src="./borders/border4.png" alt="Alternate Text" />
+                    <img class="headBorder" src="./borders/border5.png" alt="Alternate Text" />
+                    <img class="headBorder" src="./borders/border6.png" alt="Alternate Text" />
+                    <img class="headBorder" src="./borders/border7.png" alt="Alternate Text" />
+                </div>
+
+            </div>
+
+
+            <p class="character lastCharacter"><</p>
+            <p class="character nextCharacter">></p>
+
+            <div class="upload-container">
+                <span id="upload-image-btn">上传头像</span>
+            </div>
+
+            <div class="save-container">
+                <span id="save-image-btn">保存图片</span>
+            </div>
+
+        </div>
+        <div id="result-container">
+            <div id="result-image">
+
+            </div>
+
+            <div class=info-text>
+                长按图片领取你的头像吧！
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<script>
+    window.onload = function () {
+
+            $.ajax({
+                url: "/GetCount",//url地址
+                //dataType: "json",//返回的数据类型
+                type: "get",//发起请求的方式
+                success: function (data) {
+			document.querySelector("#count").innerText =  data;
+}
+            });
+
+
+
+
+
+
+	setTimeout(()=>{
+		document.querySelector(".animationGifContainer").style.opacity = "0";
+		setTimeout(()=>{document.querySelector(".animationGifContainer").style.display = "none";},500);
+},2000);
+
+
+	var token = '';
+
+        var jsSignature = '';
+
+            $.ajax({
+                url: "/GetSignature",//url地址
+                //dataType: "json",//返回的数据类型
+                type: "get",//发起请求的方式
+                success: function (data) {
+                    jsSignature = data;
+		console.log("jsSignature"+data);
+                    wx.config({
+                     debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                     appId: 'wx4b18f123b41dcae0', // 必填，公众号的唯一标识
+                     timestamp: 17798258390, // 必填，生成签名的时间戳
+                     nonceStr: 'woshidengweihao', // 必填，生成签名的随机串
+                     signature: jsSignature,// 必填，签名
+                     jsApiList: ["chooseImage","previewImage","uploadImage","downloadImage","getLocalImgData"] // 必填，需要使用的JS接口列表
+                    });
+
+                },
+                error: function () {
+
+                }
+            });
+
+
+        wx.ready(function(){
+
+            document.querySelector("#upload-image-btn").addEventListener("click",()=>{
+                wx.chooseImage({
+                  count: 1, // 默认9
+                  sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                  sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                  success: function (res) {
+        	          var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+			wx.uploadImage({
+  				localId: localIds[0], // 需要上传的图片的本地ID，由chooseImage接口获得
+  				isShowProgressTips: 1, // 默认为1，显示进度提示
+ 				 success: function (res) {
+				    var serverId = res.serverId; // 返回图片的服务器端ID
+
+			            $.ajax({
+               				 url: "/GetUploadImage?Id="+serverId,//url地址
+           				     //dataType: "json",//返回的数据类型
+      				          type: "get",//发起请求的方式
+     				           success: function (data) {
+
+						//document.querySelector(".userHead").setAttribute("src","http://file.api.weixin.qq.com/cgi-bin/media/get?access_token="+token+"&media_id="+serverId);
+
+						setImage(data)
+
+               				 },
+             				   error: function () {
+
+           				     }
+        			    });
+
+				  }
+				});
+                  }
+                });
+            });
+
+
+            function setImage(data){
+					var userHead = document.querySelector(".userHead");
+						userHead.setAttribute("src","");
+						userHead.setAttribute("src","/uploads/"+data);
+
+
+						setTimeout(()=>{
+							if(userHead.naturalHeight==0){
+
+								setImage(data);
+							}
+							else{
+								return;
+							}
+						},500);
+		};
+
+	    var saved = false;
+
+                    //save the image
+            document.querySelector("#save-image-btn").addEventListener("click", () => {
+		if(saved){
+			return;
+		}
+		else{
+		saved = true;
+		document.querySelector(".loadingContainer").style.display = "block";
+                var saveTarget = document.querySelector("#content");
+                html2canvas(saveTarget).then(canvas => {
+			document.querySelector(".loadingContainer").style.display = "none";
+			var resultContainer = document.querySelector("#result-image");
+			var image = new Image();
+			image.src = canvas.toDataURL("image/png");
+			resultContainer.appendChild(image);
+			document.querySelector("#result-container").style.display = "block";
+			document.querySelector(".headShow").style.display = "none";
+			});
+		}
+
+
+
+            });
+
+        });
+
+
+
+
+
+
+
+        //trnslate logic
+        translateLogic();
+
+
+
+	function saveHead(){
+
+	}
+
+
+
+        function getWechatCallbackIp(){
+            $.ajax({
+                url: "https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token="+wechatConfig.Token,//url地址
+                //dataType: "json",//返回的数据类型
+                type: "get",//发起请求的方式
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function () {
+
+                }
+            });
+
+        }
+
+
+
+        function translateLogic() {
+            var index = 0;
+
+            //var headBorderArray = ["head_border1", "head_border2", "head_border"];
+            var headBorderCount = document.querySelectorAll(".headBorder").length;
+
+            var headBordersContainer = document.querySelector(".headBorders-container");
+
+            var lastBordertBtn = document.querySelector(".lastCharacter");
+            var nextBorderBtn = document.querySelector(".nextCharacter");
+
+
+
+
+            function logicInner() {
+                headBordersContainer.style.transform = "translateX(-" + index * 350 + "px)";
+            }
+
+            lastBordertBtn.addEventListener("click", () => {
+                index--;
+                if (index < 0) {
+                    index = 0
+                }
+                logicInner();
+            });
+
+            nextBorderBtn.addEventListener("click", () => {
+                index++;
+                if (index > headBorderCount - 1) {
+                    index = headBorderCount - 1;
+                }
+                logicInner();
+            });
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+        //lastBorderBtn.addEventListener("click", () => {
+        //    console.log("上一个按钮");
+        //});
+
+    }
+
+
+</script>
+
+
+</html>
